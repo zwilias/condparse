@@ -47,6 +47,21 @@ class NotOperandTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($notOperand->execute(), $this->equalTo($output));
     }
 
+    public function testToString()
+    {
+        $containedOperand = $this->prophesize(OperandInterface::class);
+        $containedOperand->__toString()->willReturn('test');
+
+        $operandStack = new OperandStack();
+        $operandStack->push($containedOperand->reveal());
+
+        $notOperand = new NotOperand(new LexerToken(TokenMap::TOKEN_NOT, 'whatever'));
+        $notOperand->consumeTokens($operandStack);
+
+
+        $this->assertThat((string) $notOperand, $this->equalTo('NOT(test)'));
+    }
+
     public function notOperandProvider()
     {
         return [

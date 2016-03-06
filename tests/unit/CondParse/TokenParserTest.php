@@ -39,7 +39,9 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $operatorStack = new \SplStack();
 
 
-        $this->parser->parseToken($lexerToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal());
+        $this->parser->parseToken(
+            new TokenParserParameter($lexerToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal())
+        );
 
 
         $this->assertThat($operandStack->top(), $this->equalTo($operandProphecy->reveal()));
@@ -55,7 +57,9 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $operatorStack = new \SplStack();
 
 
-        $this->parser->parseToken($lexerToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal());
+        $this->parser->parseToken(
+            new TokenParserParameter($lexerToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal())
+        );
 
 
         $this->assertThat($operatorStack->top(), $this->equalTo($lexerToken));
@@ -71,7 +75,9 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $operatorStack = new \SplStack();
 
 
-        $this->parser->parseToken($lexerToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal());
+        $this->parser->parseToken(
+            new TokenParserParameter($lexerToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal())
+        );
 
 
         $this->assertThat($operatorStack->top(), $this->equalTo($lexerToken));
@@ -93,7 +99,9 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $operatorStack->push($otherToken);
 
 
-        $this->parser->parseToken($testToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal());
+        $this->parser->parseToken(
+            new TokenParserParameter($testToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal())
+        );
 
 
         $this->assertThat($operatorStack->top(), $this->equalTo($testToken));
@@ -124,7 +132,9 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $operatorStack->push($randomToken);
 
 
-        $this->parser->parseToken($closeToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal());
+        $this->parser->parseToken(
+            new TokenParserParameter($closeToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal())
+        );
 
 
         $this->assertThat($operatorStack->isEmpty(), $this->isTrue());
@@ -138,7 +148,10 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
 
 
         $this->parser->parseToken(
-            new LexerToken(TokenMap::TOKEN_WHITESPACE, 'whitespace'), $operandStack, $operatorStack, $tokenMapProphecy->reveal()
+            new TokenParserParameter(
+                new LexerToken(TokenMap::TOKEN_WHITESPACE, 'whitespace'),
+                $operandStack, $operatorStack, $tokenMapProphecy->reveal()
+            )
         );
 
 
@@ -169,7 +182,9 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $operatorStack->push($randomToken);
 
 
-        $this->parser->parseToken($testToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal());
+        $this->parser->parseToken(
+            new TokenParserParameter($testToken, $operandStack, $operatorStack, $tokenMapProphecy->reveal())
+        );
 
 
         $this->assertThat($operandStack->isEmpty(), $this->isFalse());

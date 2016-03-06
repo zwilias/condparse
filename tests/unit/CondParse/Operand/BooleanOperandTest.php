@@ -5,6 +5,7 @@ namespace CondParse\Operand;
 
 
 use CondParse\LexerToken;
+use CondParse\OperandStack;
 use CondParse\TokenMap;
 
 class BooleanOperandTest extends \PHPUnit_Framework_TestCase
@@ -21,6 +22,23 @@ class BooleanOperandTest extends \PHPUnit_Framework_TestCase
 
 
         $this->assertEquals($expectedResult, $operand->execute());
+    }
+
+    public function testToString()
+    {
+        $operand = new BooleanOperand(new LexerToken('test', 'bla'));
+
+
+        $this->assertEquals('test', (string) $operand);
+    }
+
+    public function testConsumerTokens_returnsSelf()
+    {
+        $operand = new BooleanOperand(new LexerToken('test', 'it'));
+        $operandStack = new OperandStack();
+
+
+        $this->assertEquals($operand, $operand->consumeTokens($operandStack));
     }
 
     public function booleanOperandProvider()

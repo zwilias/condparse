@@ -50,8 +50,39 @@ abstract class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($operand->execute(), $this->equalTo($expectedResult));
     }
 
+    /**
+     * @param bool $leftVal
+     * @param bool $rightVal
+     * @dataProvider andComparisonProvider
+     */
+    public function testToString($leftVal, $rightVal)
+    {
+        $leftValValue = $leftVal ? TokenMap::TOKEN_TRUE : TokenMap::TOKEN_FALSE;
+        $rightValValue = $rightVal ? TokenMap::TOKEN_TRUE : TokenMap::TOKEN_FALSE;
+        $leftValProphecy = $this->prophet->prophesize(OperandInterface::class);
+        $rightValProphecy = $this->prophet->prophesize(OperandInterface::class);
+
+        $leftValProphecy->__toString()->shouldBeCalled()->willReturn($leftValValue);
+        $rightValProphecy->__toString()->shouldBeCalled()->willReturn($rightValValue);
+
+        $operandStack = new OperandStack();
+        $operandStack->push($leftValProphecy->reveal());
+        $operandStack->push($rightValProphecy->reveal());
+
+
+        $operand = $this->getComparator();
+        $operand->consumeTokens($operandStack);
+
+
+        $this->assertThat((string) $operand, $this->equalTo(
+            sprintf($this->getStringTemplate(), $leftValValue, $rightValValue)
+        ));
+    }
+
     /** @return AbstractLeftRightOperator */
     abstract public function getComparator();
 
     abstract public function andComparisonProvider();
+
+    abstract public function getStringTemplate();
 }

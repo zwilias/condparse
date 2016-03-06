@@ -24,4 +24,9 @@ class OrComparisonTest extends AbstractComparisonTest
     {
         return new OrOperator(new LexerToken(TokenMap::TOKEN_OR, '||'));
     }
+
+    public function getStringTemplate()
+    {
+        return 'OR(%s, %s)';
+    }
 }

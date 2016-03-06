@@ -43,10 +43,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $tokenStream = new \ArrayIterator([new LexerToken('test', 'token')]);
         $this->tokenParserProphesy
-            ->parseToken(
-                Argument::type(LexerToken::class), Argument::type(OperandStack::class),
-                Argument::type(\SplStack::class), Argument::is($this->tokenMapProphesy->reveal())
-            )
+            ->parseToken(Argument::type(TokenParserParameter::class))
             ->shouldBeCalled();
 
 
@@ -57,25 +54,8 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         $tokenStream = new \ArrayIterator([new LexerToken('test', 'token')]);
         $this->tokenParserProphesy
-            ->parseToken(
-                Argument::type(LexerToken::class), Argument::type(OperandStack::class),
-                Argument::type(\SplStack::class), Argument::is($this->tokenMapProphesy->reveal())
-            )
-            ->shouldBeCalled()
-            ->will(function ($args) {
-                $args[2]->push('');
-            });
-
-        $this->tokenParserProphesy
-            ->pushOperand(
-                Argument::type(OperandStack::class),
-                Argument::type(\SplStack::class),
-                Argument::is($this->tokenMapProphesy->reveal())
-            )
-            ->shouldBeCalled()
-            ->will(function ($args) {
-                $args[1]->pop();
-            });
+            ->parseToken(Argument::type(TokenParserParameter::class))
+            ->shouldBeCalled();
 
 
         $this->assertNull($this->parser->parseTokenStream($tokenStream, $this->tokenMapProphesy->reveal()));
@@ -87,13 +67,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $tokenStream = new \ArrayIterator([new LexerToken('test', 'token')]);
         $this->tokenParserProphesy
-            ->parseToken(
-                Argument::type(LexerToken::class), Argument::type(OperandStack::class),
-                Argument::type(\SplStack::class), Argument::is($this->tokenMapProphesy->reveal())
-            )
+            ->parseToken(Argument::type(TokenParserParameter::class))
             ->shouldBeCalled()
             ->will(function ($args) use ($operandSpyProphesy) {
-                $args[1]->push($operandSpyProphesy->reveal());
+                $args[0]->getOperandStack()->push($operandSpyProphesy->reveal());
             });
 
 

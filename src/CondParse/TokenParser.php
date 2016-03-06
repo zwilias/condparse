@@ -4,53 +4,43 @@
 namespace CondParse;
 
 
+use CondParse\ParseStrategy\ClosingBracket;
+use CondParse\ParseStrategy\DefaultStrategy;
+use CondParse\ParseStrategy\Operand;
+use CondParse\ParseStrategy\ParseStrategyInterface;
+use CondParse\ParseStrategy\ToOperatorStack;
+use CondParse\ParseStrategy\WhiteSpace;
+
 class TokenParser
 {
-    /**
-     * @param LexerToken $lexerToken
-     * @param OperandStack $operandStack
-     * @param \SplStack $operatorStack
-     * @param TokenMap $tokenMap
-     */
-    public function parseToken(LexerToken $lexerToken, OperandStack $operandStack, \SplStack $operatorStack, TokenMap $tokenMap)
+    const STRATEGIES = [
+        WhiteSpace::class,
+        Operand::class,
+        ToOperatorStack::class,
+        ClosingBracket::class,
+        DefaultStrategy::class
+    ];
+
+    /** @var ParseStrategyInterface[] */
+    private $strategies;
+
+    public function __construct()
     {
-        if ($lexerToken->isToken(TokenMap::TOKEN_WHITESPACE)) {
-            // skip whitespace
-        } elseif ($tokenMap->isOperand($lexerToken)) {
-            $operandStack->push(
-                $tokenMap->buildOperand($lexerToken)->consumeTokens($operandStack)
-            );
-        } elseif (
-            $lexerToken->isToken(TokenMap::TOKEN_BRACKET_OPEN)
-            || $operatorStack->isEmpty()
-            || $tokenMap->compareOperatorPrecedence($lexerToken, $operatorStack->top()) > 0
-        ) {
-            $operatorStack->push($lexerToken);
-        } elseif ($lexerToken->isToken(TokenMap::TOKEN_BRACKET_CLOSE)) {
-            while (! $operatorStack->top()->isToken(TokenMap::TOKEN_BRACKET_OPEN)) {
-                $this->pushOperand($operandStack, $operatorStack, $tokenMap);
-            }
-
-            $operatorStack->pop();
-        } else {
-            while (! $operatorStack->isEmpty() && $tokenMap->compareOperatorPrecedence($lexerToken, $operatorStack->top()) <= 0) {
-                $this->pushOperand($operandStack, $operatorStack, $tokenMap);
-            }
-
-            $operatorStack->push($lexerToken);
-        }
+        $this->strategies = array_map(function ($class) {
+            return new $class();
+        }, self::STRATEGIES);
     }
 
-
     /**
-     * @param OperandStack $operandStack
-     * @param \SplStack $operatorStack
-     * @param TokenMap $tokenMap
+     * @param TokenParserParameter $parameter
      */
-    public function pushOperand(OperandStack $operandStack, \SplStack $operatorStack, TokenMap $tokenMap)
+    public function parseToken(TokenParserParameter $parameter)
     {
-        $operandStack->push(
-            $tokenMap->buildOperand($operatorStack->pop())->consumeTokens($operandStack)
-        );
+        foreach ($this->strategies as $strategy) {
+            if ($strategy->shouldExecuteFor($parameter)) {
+                $strategy->executeFor($parameter);
+                return;
+            }
+        }
     }
 }

@@ -24,4 +24,9 @@ class AndComparisonTest extends AbstractComparisonTest
     {
         return new AndOperator(new LexerToken(TokenMap::TOKEN_AND, '&&'));
     }
+
+    public function getStringTemplate()
+    {
+        return 'AND(%s, %s)';
+    }
 }
