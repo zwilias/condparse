@@ -44,7 +44,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $tokenStream = new \ArrayIterator([['test', 'token']]);
         $this->tokenParserProphesy
             ->parseToken(
-                Argument::is('test'), Argument::is('token'), Argument::type(\SplStack::class),
+                Argument::is('test'), Argument::is('token'), Argument::type(OperandStack::class),
                 Argument::type(\SplStack::class), Argument::is($this->tokenMapProphesy->reveal())
             )
             ->shouldBeCalled();
@@ -58,7 +58,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
         $tokenStream = new \ArrayIterator([['test', 'token']]);
         $this->tokenParserProphesy
             ->parseToken(
-                Argument::is('test'), Argument::is('token'), Argument::type(\SplStack::class),
+                Argument::is('test'), Argument::is('token'), Argument::type(OperandStack::class),
                 Argument::type(\SplStack::class), Argument::is($this->tokenMapProphesy->reveal())
             )
             ->shouldBeCalled()
@@ -68,7 +68,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
         $this->tokenParserProphesy
             ->pushOperand(
-                Argument::type(\SplStack::class),
+                Argument::type(OperandStack::class),
                 Argument::type(\SplStack::class),
                 Argument::is($this->tokenMapProphesy->reveal())
             )
@@ -83,20 +83,23 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testParseTokenStream_returnsTopOfOperandStack_ifNotEmpty()
     {
+        $operandSpyProphesy = $this->prophet->prophesize(OperandInterface::class);
+
         $tokenStream = new \ArrayIterator([['test', 'token']]);
         $this->tokenParserProphesy
             ->parseToken(
-                Argument::is('test'), Argument::is('token'), Argument::type(\SplStack::class),
+                Argument::is('test'), Argument::is('token'), Argument::type(OperandStack::class),
                 Argument::type(\SplStack::class), Argument::is($this->tokenMapProphesy->reveal())
             )
             ->shouldBeCalled()
-            ->will(function ($args) {
-                $args[2]->push('');
+            ->will(function ($args) use ($operandSpyProphesy) {
+                $args[2]->push($operandSpyProphesy->reveal());
             });
 
 
         $this->assertThat(
-            $this->parser->parseTokenStream($tokenStream, $this->tokenMapProphesy->reveal()), $this->equalTo('')
+            $this->parser->parseTokenStream($tokenStream, $this->tokenMapProphesy->reveal()),
+            $this->equalTo($operandSpyProphesy->reveal())
         );
     }
 }

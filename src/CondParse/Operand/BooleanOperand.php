@@ -9,7 +9,7 @@ use CondParse\TokenMap;
 class BooleanOperand extends AbstractValueOperand
 {
     /** @return bool */
-    function execute()
+    public function execute()
     {
         return $this->token === TokenMap::TOKEN_TRUE;
     }

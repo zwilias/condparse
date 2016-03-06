@@ -7,7 +7,7 @@ namespace CondParse\Operand;
 class OrOperator extends AbstractLeftRightOperator
 {
     /** @return bool */
-    function execute()
+    public function execute()
     {
         return $this->leftOperand->execute() || $this->rightOperand->execute();
     }

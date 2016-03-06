@@ -24,7 +24,7 @@ class Parser implements ParserInterface
      */
     public function parseTokenStream(\Traversable $tokenStream, TokenMap $tokenMap)
     {
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operatorStack = new \SplStack();
 
         foreach ($tokenStream as $tokenEntry) {

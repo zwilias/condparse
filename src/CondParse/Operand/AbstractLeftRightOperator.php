@@ -5,6 +5,7 @@ namespace CondParse\Operand;
 
 
 use CondParse\OperandInterface;
+use CondParse\OperandStack;
 
 abstract class AbstractLeftRightOperator extends AbstractOperand
 {
@@ -14,10 +15,10 @@ abstract class AbstractLeftRightOperator extends AbstractOperand
     protected $rightOperand;
 
     /**
-     * @param \SplStack $operandStack
+     * @param OperandStack $operandStack
      * @return $this
      */
-    public function consumeTokens(\SplStack $operandStack)
+    public function consumeTokens(OperandStack $operandStack)
     {
         $this->rightOperand = $operandStack->pop();
         $this->leftOperand = $operandStack->pop();

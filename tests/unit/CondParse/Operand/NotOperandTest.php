@@ -6,6 +6,7 @@ namespace unit\CondParse\Operand;
 
 use CondParse\Operand\NotOperand;
 use CondParse\OperandInterface;
+use CondParse\OperandStack;
 use CondParse\TokenMap;
 use Prophecy\Prophet;
 
@@ -34,7 +35,7 @@ class NotOperandTest extends \PHPUnit_Framework_TestCase
         $containedOperandProphesy = $this->prophesize(OperandInterface::class);
         $containedOperandProphesy->execute()->shouldBeCalled()->willReturn($input);
 
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operandStack->push($containedOperandProphesy->reveal());
 
 

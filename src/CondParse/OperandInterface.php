@@ -10,10 +10,10 @@ interface OperandInterface
     function execute();
 
     /**
-     * @param \SplStack $operandStack <OperandInterface>
+     * @param OperandStack $operandStack
      * @return $this
      */
-    function consumeTokens(\SplStack $operandStack);
+    function consumeTokens(OperandStack $operandStack);
 
     /** @return string */
     function __toString();

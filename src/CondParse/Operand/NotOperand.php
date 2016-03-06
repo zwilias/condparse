@@ -5,6 +5,7 @@ namespace CondParse\Operand;
 
 
 use CondParse\OperandInterface;
+use CondParse\OperandStack;
 
 class NotOperand extends AbstractOperand
 {
@@ -12,16 +13,16 @@ class NotOperand extends AbstractOperand
     private $containedOperand;
 
     /** @return bool */
-    function execute()
+    public function execute()
     {
         return ! $this->containedOperand->execute();
     }
 
     /**
-     * @param \SplStack $operandStack <OperandInterface>
+     * @param OperandStack $operandStack
      * @return $this
      */
-    function consumeTokens(\SplStack $operandStack)
+    public function consumeTokens(OperandStack $operandStack)
     {
         $this->containedOperand = $operandStack->pop();
         return $this;

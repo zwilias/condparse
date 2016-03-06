@@ -32,9 +32,9 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
 
         $tokenMapProphecy->isOperand(Argument::is('token'))->shouldBeCalled()->willReturn(true);
         $tokenMapProphecy->buildOperand(Argument::is('token'), Argument::is('value'))->shouldBeCalled()->willReturn($operandProphecy->reveal());
-        $operandProphecy->consumeTokens(Argument::type(\SplStack::class))->shouldBeCalled()->willReturn($operandProphecy->reveal());
+        $operandProphecy->consumeTokens(Argument::type(OperandStack::class))->shouldBeCalled()->willReturn($operandProphecy->reveal());
 
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operatorStack = new \SplStack();
 
 
@@ -49,7 +49,7 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $tokenMapProphecy = $this->prophet->prophesize(TokenMap::class);
         $tokenMapProphecy->isOperand(Argument::is(TokenMap::TOKEN_BRACKET_OPEN))->shouldBeCalled()->willReturn(false);
 
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operatorStack = new \SplStack();
 
 
@@ -64,7 +64,7 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $tokenMapProphecy = $this->prophet->prophesize(TokenMap::class);
         $tokenMapProphecy->isOperand(Argument::is('test'))->shouldBeCalled()->willReturn(false);
 
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operatorStack = new \SplStack();
 
 
@@ -83,7 +83,7 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
             ->compareOperatorPrecedence(Argument::is('test'), Argument::is('other'))
             ->shouldBeCalled()->willReturn(1);
 
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operatorStack = new \SplStack();
         $operatorStack->push(['other', 'value']);
 
@@ -105,9 +105,11 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $tokenMapProphecy
             ->compareOperatorPrecedence(Argument::is(TokenMap::TOKEN_BRACKET_CLOSE), Argument::is('random'))
             ->shouldBeCalled()->willReturn(-1);
-        $operandProphecy->consumeTokens(Argument::type(\SplStack::class))->shouldBeCalled()->willReturn($operandProphecy->reveal());
+        $operandProphecy
+            ->consumeTokens(Argument::type(OperandStack::class))
+            ->shouldBeCalled()->willReturn($operandProphecy->reveal());
 
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operatorStack = new \SplStack();
         $operatorStack->push([TokenMap::TOKEN_BRACKET_OPEN, 'value']);
         $operatorStack->push(['random', 'token']);
@@ -122,7 +124,7 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
     public function testParseToken_skipWhiteSpace()
     {
         $tokenMapProphecy = $this->prophet->prophesize(TokenMap::class);
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operatorStack = new \SplStack();
 
 
@@ -146,9 +148,11 @@ class TokenParserTest extends \PHPUnit_Framework_TestCase
         $tokenMapProphecy
             ->compareOperatorPrecedence(Argument::is('test'), Argument::is('random'))
             ->shouldBeCalled()->willReturn(-1);
-        $operandProphecy->consumeTokens(Argument::type(\SplStack::class))->shouldBeCalled()->willReturn($operandProphecy->reveal());
+        $operandProphecy
+            ->consumeTokens(Argument::type(OperandStack::class))
+            ->shouldBeCalled()->willReturn($operandProphecy->reveal());
 
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operatorStack = new \SplStack();
         $operatorStack->push(['random', 'token']);
 

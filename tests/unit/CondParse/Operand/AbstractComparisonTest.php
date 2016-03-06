@@ -5,6 +5,7 @@ namespace CondParse\Operand;
 
 
 use CondParse\OperandInterface;
+use CondParse\OperandStack;
 use CondParse\TokenMap;
 use Prophecy\Prophet;
 
@@ -37,14 +38,13 @@ abstract class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
         $leftValProphecy->execute()->shouldBeCalled()->willReturn($leftVal);
         $rightValProphecy->execute()->willReturn($rightVal);
 
-        $operandStack = new \SplStack();
+        $operandStack = new OperandStack();
         $operandStack->push($leftValProphecy->reveal());
         $operandStack->push($rightValProphecy->reveal());
-        $operatorStack = new \SplStack();
 
 
         $operand = $this->getComparator();
-        $operand->consumeTokens($operandStack, $operatorStack);
+        $operand->consumeTokens($operandStack);
 
 
         $this->assertThat($operand->execute(), $this->equalTo($expectedResult));

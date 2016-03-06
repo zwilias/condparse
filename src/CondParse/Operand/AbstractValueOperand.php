@@ -4,9 +4,11 @@
 namespace CondParse\Operand;
 
 
+use CondParse\OperandStack;
+
 abstract class AbstractValueOperand extends AbstractOperand
 {
-    function consumeTokens(\SplStack $operandStack)
+    public function consumeTokens(OperandStack $operandStack)
     {
         return $this;
     }

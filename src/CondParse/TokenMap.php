@@ -88,7 +88,7 @@ class TokenMap
      */
     protected function registerToken($name, $regex, $class)
     {
-        if (!is_string($name)) {
+        if (! is_string($name)) {
             throw new TokenMapException('Can\'t register token, name must be string');
         }
 

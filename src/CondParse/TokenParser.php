@@ -9,11 +9,11 @@ class TokenParser
     /**
      * @param string $token
      * @param string $value
-     * @param \SplStack $operandStack
+     * @param OperandStack $operandStack
      * @param \SplStack $operatorStack
      * @param TokenMap $tokenMap
      */
-    public function parseToken($token, $value, \SplStack $operandStack, \SplStack $operatorStack, TokenMap $tokenMap)
+    public function parseToken($token, $value, OperandStack $operandStack, \SplStack $operatorStack, TokenMap $tokenMap)
     {
         if ($token === TokenMap::TOKEN_WHITESPACE) {
             return;
@@ -54,11 +54,11 @@ class TokenParser
 
 
     /**
-     * @param \SplStack $operandStack
+     * @param OperandStack $operandStack
      * @param \SplStack $operatorStack
      * @param TokenMap $tokenMap
      */
-    public function pushOperand(\SplStack $operandStack, \SplStack $operatorStack, TokenMap $tokenMap)
+    public function pushOperand(OperandStack $operandStack, \SplStack $operatorStack, TokenMap $tokenMap)
     {
         list($operatorToken, $operatorValue) = $operatorStack->pop();
 
