@@ -33,16 +33,24 @@ class Parser implements ParserInterface
             );
         }
 
-        while (! $operatorStack->isEmpty()) {
+        $this->unfoldStack($tokenMap, $operatorStack, $operandStack);
+
+        return $operandStack->top();
+    }
+
+    /**
+     * @param TokenMap $tokenMap
+     * @param \SplStack $operatorStack
+     * @param OperandStack $operandStack
+     */
+    protected function unfoldStack(TokenMap $tokenMap, $operatorStack, $operandStack)
+    {
+        while (!$operatorStack->isEmpty()) {
             $operandStack->push(
                 $tokenMap
                     ->buildOperand($operatorStack->pop())
                     ->consumeTokens($operandStack)
             );
         }
-
-        return $operandStack->isEmpty()
-            ? null
-            : $operandStack->top();
     }
 }

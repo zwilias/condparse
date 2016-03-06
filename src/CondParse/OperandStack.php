@@ -31,11 +31,13 @@ class OperandStack
     }
 
     /**
-     * @return OperandInterface
+     * @return OperandInterface|null
      */
     public function top()
     {
-        return $this->stack->top();
+        return $this->isEmpty()
+            ? null
+            : $this->stack->top();
     }
 
     /**

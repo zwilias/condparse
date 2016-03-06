@@ -110,7 +110,7 @@ class TokenMap
     }
 
     /**
-     * @return array<string, string>
+     * @return string[]
      */
     public function getTokens()
     {
