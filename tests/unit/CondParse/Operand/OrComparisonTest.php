@@ -4,6 +4,7 @@
 namespace CondParse\Operand;
 
 
+use CondParse\LexerToken;
 use CondParse\TokenMap;
 
 class OrComparisonTest extends AbstractComparisonTest
@@ -21,6 +22,6 @@ class OrComparisonTest extends AbstractComparisonTest
     /** @return AbstractLeftRightOperator */
     public function getComparator()
     {
-        return new OrOperator(TokenMap::TOKEN_OR, '||');
+        return new OrOperator(new LexerToken(TokenMap::TOKEN_OR, '||'));
     }
 }

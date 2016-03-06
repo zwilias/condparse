@@ -4,6 +4,7 @@
 namespace unit\CondParse\Operand;
 
 
+use CondParse\LexerToken;
 use CondParse\Operand\NotOperand;
 use CondParse\OperandInterface;
 use CondParse\OperandStack;
@@ -39,7 +40,7 @@ class NotOperandTest extends \PHPUnit_Framework_TestCase
         $operandStack->push($containedOperandProphesy->reveal());
 
 
-        $notOperand = new NotOperand(TokenMap::TOKEN_NOT, 'whatever');
+        $notOperand = new NotOperand(new LexerToken(TokenMap::TOKEN_NOT, 'whatever'));
         $notOperand->consumeTokens($operandStack);
 
 

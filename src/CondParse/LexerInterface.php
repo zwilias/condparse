@@ -27,7 +27,7 @@ interface LexerInterface
     /**
      * @param string $conditionString
      * @param TokenMap $tokenMap
-     * @return \Traversable <string>
+     * @return \Traversable <LexerToken>
      */
     function getTokenStream($conditionString, TokenMap $tokenMap);
 }

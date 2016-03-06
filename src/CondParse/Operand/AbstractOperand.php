@@ -4,6 +4,7 @@
 namespace CondParse\Operand;
 
 
+use CondParse\LexerToken;
 use CondParse\OperandInterface;
 
 abstract class AbstractOperand implements OperandInterface
@@ -15,12 +16,11 @@ abstract class AbstractOperand implements OperandInterface
     protected $value;
 
     /**
-     * @param string $token
-     * @param mixed $value
+     * @param LexerToken $lexerToken
      */
-    public function __construct($token, $value)
+    public function __construct(LexerToken $lexerToken)
     {
-        $this->token = $token;
-        $this->value = $value;
+        $this->token = $lexerToken->getToken();
+        $this->value = $lexerToken->getValue();
     }
 }

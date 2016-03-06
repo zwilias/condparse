@@ -27,10 +27,8 @@ class Parser implements ParserInterface
         $operandStack = new OperandStack();
         $operatorStack = new \SplStack();
 
-        foreach ($tokenStream as $tokenEntry) {
-            list($token, $value) = $tokenEntry;
-
-            $this->tokenParser->parseToken($token, $value, $operandStack, $operatorStack, $tokenMap);
+        foreach ($tokenStream as $lexerToken) {
+            $this->tokenParser->parseToken($lexerToken, $operandStack, $operatorStack, $tokenMap);
         }
 
         while (! $operatorStack->isEmpty()) {

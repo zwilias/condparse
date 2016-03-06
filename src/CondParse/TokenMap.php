@@ -118,31 +118,32 @@ class TokenMap
     }
 
     /**
-     * @param string $leftOperator
-     * @param string $rightOperator
+     * @param LexerToken $leftLexerToken
+     * @param LexerToken $rightLexerToken
      * @return int
      */
-    public function compareOperatorPrecedence($leftOperator, $rightOperator)
+    public function compareOperatorPrecedence(LexerToken $leftLexerToken, LexerToken $rightLexerToken)
     {
-        return $this->operatorPrecedence[$leftOperator] - $this->operatorPrecedence[$rightOperator];
+        return
+            $this->operatorPrecedence[$leftLexerToken->getToken()]
+            - $this->operatorPrecedence[$rightLexerToken->getToken()];
     }
 
     /**
-     * @param string $token
+     * @param LexerToken $lexerToken
      * @return bool
      */
-    public function isOperand($token)
+    public function isOperand(LexerToken $lexerToken)
     {
-        return in_array($token, $this->operandTokens);
+        return in_array($lexerToken->getToken(), $this->operandTokens);
     }
 
     /**
-     * @param string $token
-     * @param mixed $value
+     * @param LexerToken $lexerToken
      * @return OperandInterface
      */
-    public function buildOperand($token, $value)
+    public function buildOperand(LexerToken $lexerToken)
     {
-        return new $this->tokenClasses[$token]($token, $value);
+        return new $this->tokenClasses[$lexerToken->getToken()]($lexerToken);
     }
 }

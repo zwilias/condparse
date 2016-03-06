@@ -11,6 +11,14 @@ class Lexer implements LexerInterface
     /** @var callable[] */
     private $postFunctions = [];
 
+    /** @var LexerTokenFactory */
+    private $lexerTokenFactory;
+
+    public function __construct()
+    {
+        $this->lexerTokenFactory = new LexerTokenFactory;
+    }
+
     /**
      * @param callable $postFunction
      * @return $this
@@ -54,7 +62,7 @@ class Lexer implements LexerInterface
     /**
      * @param string $conditionString
      * @param string $regex
-     * @return \Traversable <string>
+     * @return \Traversable <LexerToken>
      * @throws LexerException
      */
     protected function getTokenStreamWithRegex($conditionString, $regex)
@@ -69,7 +77,7 @@ class Lexer implements LexerInterface
 
             $offSet += strlen($match);
 
-            yield [$token, $this->applyPostFunctions($token, $match)];
+            yield $this->lexerTokenFactory->buildLexerToken($token, $this->applyPostFunctions($token, $match));
         }
     }
 

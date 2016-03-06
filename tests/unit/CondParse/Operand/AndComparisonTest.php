@@ -4,6 +4,7 @@
 namespace CondParse\Operand;
 
 
+use CondParse\LexerToken;
 use CondParse\TokenMap;
 
 class AndComparisonTest extends AbstractComparisonTest
@@ -21,6 +22,6 @@ class AndComparisonTest extends AbstractComparisonTest
     /** @return AbstractLeftRightOperator */
     public function getComparator()
     {
-        return new AndOperator(TokenMap::TOKEN_AND, '&&');
+        return new AndOperator(new LexerToken(TokenMap::TOKEN_AND, '&&'));
     }
 }

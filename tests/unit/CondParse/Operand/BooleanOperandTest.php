@@ -4,6 +4,7 @@
 namespace CondParse\Operand;
 
 
+use CondParse\LexerToken;
 use CondParse\TokenMap;
 
 class BooleanOperandTest extends \PHPUnit_Framework_TestCase
@@ -16,7 +17,7 @@ class BooleanOperandTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecute($token, $value, $expectedResult)
     {
-        $operand = new BooleanOperand($token, $value);
+        $operand = new BooleanOperand(new LexerToken($token, $value));
 
 
         $this->assertEquals($expectedResult, $operand->execute());
