@@ -88,22 +88,7 @@ class TokenMap
      */
     protected function registerToken($name, $regex, $class)
     {
-        if (! is_string($name)) {
-            throw new TokenMapException('Can\'t register token, name must be string');
-        }
-
-        if (isset($this->tokenList[$name])) {
-            throw new TokenMapException(sprintf(
-                'Token <%s> already defined with regex <%s>',
-                $name, $this->tokenList[$name]
-            ));
-        }
-
-        if (! is_subclass_of($class, OperandInterface::class)) {
-            throw new TokenMapException(sprintf(
-                'Token <%s> with class <%s> must implement OperandInterface', $name, $class
-            ));
-        }
+        $this->verifyTokenConfig($name, $class);
 
         $this->tokenList[$name] = $regex;
         $this->tokenClasses[$name] = $class;
@@ -145,5 +130,30 @@ class TokenMap
     public function buildOperand(LexerToken $lexerToken)
     {
         return new $this->tokenClasses[$lexerToken->getToken()]($lexerToken);
+    }
+
+    /**
+     * @param string $name
+     * @param string $class
+     * @throws TokenMapException
+     */
+    protected function verifyTokenConfig($name, $class)
+    {
+        if (!is_string($name)) {
+            throw new TokenMapException('Can\'t register token, name must be string');
+        }
+
+        if (isset($this->tokenList[$name])) {
+            throw new TokenMapException(sprintf(
+                'Token <%s> already defined with regex <%s>',
+                $name, $this->tokenList[$name]
+            ));
+        }
+
+        if (!is_subclass_of($class, OperandInterface::class)) {
+            throw new TokenMapException(sprintf(
+                'Token <%s> with class <%s> must implement OperandInterface', $name, $class
+            ));
+        }
     }
 }
