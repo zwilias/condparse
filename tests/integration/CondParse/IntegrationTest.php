@@ -7,7 +7,7 @@ namespace CondParse;
 use CondParse\Operand\AbstractLeftRightOperator;
 use CondParse\Operand\AbstractValueOperand;
 
-class CondParseTest extends \PHPUnit_Framework_TestCase
+class IntegrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param string $conditionString
