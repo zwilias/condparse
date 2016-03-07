@@ -9,9 +9,9 @@ class OperandStack
     /** @var \SplStack */
     private $stack;
 
-    public function __construct()
+    public function __construct(\SplStack $storage = null)
     {
-        $this->stack = new \SplStack();
+        $this->stack = $storage ?: new \SplStack();
     }
 
     /**

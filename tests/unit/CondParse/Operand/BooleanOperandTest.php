@@ -8,6 +8,9 @@ use CondParse\LexerToken;
 use CondParse\OperandStack;
 use CondParse\TokenMap;
 
+/**
+ * @covers CondParse\Operand\BooleanOperand<extended>
+ */
 class BooleanOperandTest extends \PHPUnit_Framework_TestCase
 {
     /**

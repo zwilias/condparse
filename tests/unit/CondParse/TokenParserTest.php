@@ -7,6 +7,9 @@ namespace CondParse;
 use Prophecy\Argument;
 use Prophecy\Prophet;
 
+/**
+ * @covers CondParse\TokenParser<extended>
+ */
 class TokenParserTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Prophet */

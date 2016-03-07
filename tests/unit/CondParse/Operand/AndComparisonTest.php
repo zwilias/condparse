@@ -7,6 +7,9 @@ namespace CondParse\Operand;
 use CondParse\LexerToken;
 use CondParse\TokenMap;
 
+/**
+ * @covers CondParse\Operand\AndOperator<extended>
+ */
 class AndComparisonTest extends AbstractComparisonTest
 {
     public function andComparisonProvider()

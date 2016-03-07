@@ -6,6 +6,9 @@ namespace CondParse;
 use CondParse\Exception\LexerException;
 use CondParse\Operand\AbstractValueOperand;
 
+/**
+ * @covers CondParse\Lexer<extended>
+ */
 class LexerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Lexer */

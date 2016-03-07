@@ -11,6 +11,9 @@ use CondParse\OperandStack;
 use CondParse\TokenMap;
 use Prophecy\Prophet;
 
+/**
+ * @covers CondParse\Operand\NotOperand<extended>
+ */
 class NotOperandTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Prophet */

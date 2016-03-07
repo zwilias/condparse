@@ -8,6 +8,9 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
 
+/**
+ * @covers CondParse\Parser<extended>
+ */
 class ParserTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Prophet */
@@ -52,13 +55,27 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function testParseTokenStream_whileOperatorsLeft_operandsArePushed()
     {
-        $tokenStream = new \ArrayIterator([new LexerToken('test', 'token')]);
+        $lexerToken = new LexerToken('test', 'token');
+        $tokenStream = new \ArrayIterator([$lexerToken]);
         $this->tokenParserProphesy
             ->parseToken(Argument::type(TokenParserParameter::class))
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->will(function ($args) use ($lexerToken) {
+                $args[0]->getOperatorStack()->push($lexerToken);
+            });
+        $operandProphesy = $this->prophet->prophesize(OperandInterface::class);
+        $operandProphesy
+            ->consumeTokens(Argument::type(OperandStack::class))
+            ->shouldBeCalled()
+            ->willReturn($operandProphesy->reveal());
+
+        $this->tokenMapProphesy->buildOperand(Argument::is($lexerToken))->willReturn($operandProphesy->reveal());
 
 
-        $this->assertNull($this->parser->parseTokenStream($tokenStream, $this->tokenMapProphesy->reveal()));
+        $this->assertThat(
+            $this->parser->parseTokenStream($tokenStream, $this->tokenMapProphesy->reveal()),
+            $this->equalTo($operandProphesy->reveal())
+        );
     }
 
     public function testParseTokenStream_returnsTopOfOperandStack_ifNotEmpty()
