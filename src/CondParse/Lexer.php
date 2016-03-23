@@ -96,14 +96,13 @@ class Lexer implements LexerInterface
      */
     protected function extractMatch($matches)
     {
-        $matches = array_filter($matches, function ($value, $key) {
-            return is_string($key) && !empty($value);
-        }, ARRAY_FILTER_USE_BOTH);
+        foreach ($matches as $key => $value) {
+            if (is_string($key) && !empty($value)) {
+                return [$value, $key];
+            }
+        }
 
-        $match = each($matches);
-        $token = $match['key'];
-        $match = $match['value'];
-        return [$match, $token];
+        return [];
     }
 
     /**
