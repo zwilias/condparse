@@ -97,7 +97,7 @@ class Lexer implements LexerInterface
     protected function extractMatch($matches)
     {
         foreach ($matches as $key => $value) {
-            if (is_string($key) && !empty($value)) {
+            if (is_string($key) && $value !== '') {
                 return [$value, $key];
             }
         }
